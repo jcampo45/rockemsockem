@@ -1,6 +1,6 @@
-/BBB-MPU6050.cpp
-by OP from teachmemicro.com
-*/
+//BBB-MPU6050.cpp
+//by OP from teachmemicro.com
+
 
 #include <cstdlib>
 #include <cstdio>
@@ -38,7 +38,7 @@ const char* GYRO_Z_OUT_L = " 0x48 ";
 const char* cmdGet = "i2cget -y 2";
 const char* cmdSet = "i2cset -y 2";
 
-/*exec function that runs bash commands in c++
+//exec function that runs bash commands in c++
 string exec(char* cmd) {
 	string data;
 	FILE * stream;
@@ -56,7 +56,7 @@ data.append(buffer);
 	return data;
 }
 
-/*function that performs geti2c
+//function that performs geti2c
 string get(const char* reg1, const char* reg2){
 	char str[100];
 	string str2;
@@ -69,7 +69,7 @@ string get(const char* reg1, const char* reg2){
 	return str2;
 }
 
-/*function that performs seti2c
+//function that performs seti2c
 void set(const char* reg1, const char* reg2, int value){
 	char str[100];
 	string str2;
