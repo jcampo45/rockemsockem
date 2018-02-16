@@ -1,4 +1,4 @@
-/BBB-MPU6050.cpp
+/*BBB-MPU6050.cpp
 by OP from teachmemicro.com
 */
 
@@ -20,8 +20,8 @@ int16_t gyro_x;
 int16_t gyro_y;
 int16_t gyro_z;
 
-const char* deviceADDR = " 0x68";
-const char* PWR_MGMT_1 = " 0x6B";
+const char* deviceADDR = " 0x68 ";
+const char* PWR_MGMT_1 = " 0x6B ";
 const char* ACCEL_X_OUT_H = " 0x3B ";
 const char* ACCEL_X_OUT_L = " 0x3C ";
 const char* ACCEL_Y_OUT_H = " 0x3D ";
@@ -38,7 +38,7 @@ const char* GYRO_Z_OUT_L = " 0x48 ";
 const char* cmdGet = "i2cget -y 2";
 const char* cmdSet = "i2cset -y 2";
 
-/*exec function that runs bash commands in c++
+//exec function that runs bash commands in c++
 string exec(char* cmd) {
 	string data;
 	FILE * stream;
@@ -56,7 +56,7 @@ data.append(buffer);
 	return data;
 }
 
-/*function that performs geti2c
+//function that performs geti2c
 string get(const char* reg1, const char* reg2){
 	char str[100];
 	string str2;
@@ -69,7 +69,7 @@ string get(const char* reg1, const char* reg2){
 	return str2;
 }
 
-/*function that performs seti2c
+//function that performs seti2c
 void set(const char* reg1, const char* reg2, int value){
 	char str[100];
 	string str2;
@@ -79,6 +79,7 @@ void set(const char* reg1, const char* reg2, int value){
 	strcat(str, reg2);
 	strcat(str, to_string(value).c_str());
 
+	
 	str2 = exec(str);
 }
 
@@ -91,7 +92,7 @@ int main(){
 16) << 8 + stoi(get(deviceADDR, ACCEL_Y_OUT_L), nullptr, 16);
 		accel_z = stoi(get(deviceADDR, ACCEL_Z_OUT_H), nullptr, 
 16) << 8 + stoi(get(deviceADDR, ACCEL_Z_OUT_L), nullptr, 16);
-		accel_x = accel_x / 16384;
+		accel_x = accel_x;
 		accel_y = accel_y / 16384;
 		accel_z = accel_z / 16384;
 
