@@ -80,7 +80,7 @@ void set(const char* reg1, const char* reg2, int value){
 
 	
 	str2 = exec(str);
-}
+}//CHANGE
 
 int main(){
 	set(deviceADDR, PWR_MGMT_1, 0);	//turn on the MPU6050
