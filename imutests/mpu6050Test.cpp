@@ -1,6 +1,5 @@
-/*BBB-MPU6050.cpp
-by OP from teachmemicro.com
-*/
+//BBB-MPU6050.cpp
+//by OP from teachmemicro.com
 
 #include <cstdlib>
 #include <cstdio>
