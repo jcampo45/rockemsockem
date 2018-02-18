@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <iostream>
+#include <fstream> //+: for output file
 #include <stdexcept>
 #include <cstring>
 #include <string>
@@ -84,6 +85,13 @@ void set(const char* reg1, const char* reg2, int value){
 
 int main(){
 	set(deviceADDR, PWR_MGMT_1, 0);	//turn on the MPU6050
+	//+: create export files
+	ofstream out_XAccel,  out_YAccel,  out_ZAccel,
+	  out_XGyro, out_YGyro, out_ZGyro;
+	//+: open export file
+      	out_XAccel.open("Accel_X.txt"); out_YAccel.open("Accel_Y.txt"); out_ZAccel.open("Accel_Z.txt");
+	out_XGyro.open("Gyro_X.txt"); out_YGyro.open("Gyro_Y.txt"); out_ZGyro.open("Gyro_Z.txt");
+	
 	while(true){
 		accel_x = stoi(get(deviceADDR, ACCEL_X_OUT_H), nullptr, 
 16) << 8 + stoi(get(deviceADDR, ACCEL_X_OUT_L), nullptr, 16);
@@ -105,11 +113,21 @@ int main(){
 		gyro_y = gyro_y / 131;
 		gyro_z = gyro_z / 131;
 
-		cout << "X-acc: " << accel_x << " Y-acc: " << accel_y << 
+
+		/*cout << "X-acc: " << accel_x << " Y-acc: " << accel_y << 
 " Z-acc: " << accel_z << endl;
 		cout << "X-gyro: " << gyro_x << " Y-gyro: " << gyro_y << 
-" Z-gyro: " << gyro_z << endl;
+		" Z-gyro: " << gyro_z << endl;*/
+		
+		//+: Write to export file
+		//outputFile << "X-Acc: " << accel_x << endl;
+		out_XAccel << accel_x << endl; out_YAccel << accel_y << endl; out_ZAccel << accel_z << endl;
+		out_XGyro << gyro_x <<endl; out_YGyro << gyro_y <<endl; out_ZGyro << gyro_z <<endl;
 
 	}
+	//+: Close File
+	out_XAccel.close(); out_YAccel.close(); out_ZAccel.close();
+	out_XGyro.close(); out_YGyro.close(); out_ZGyro.close();
+
 	return 0;
 }
