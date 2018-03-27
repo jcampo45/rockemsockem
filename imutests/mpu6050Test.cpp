@@ -83,18 +83,54 @@ void set(const char* reg1, const char* reg2, int value){
   str2 = exec(str);
 }//CHANGE
 
-int main(){
+int main(int argc, char** argv){
 
+  //init. variables
+  int gyroScale, accelScale;
   
+  //+:imuconfig 
   set(deviceADDR, PWR_MGMT_1, 0);//turn on the MPU6050
-  system("i2cdump 2 0x68");
+  cout <<"Enter GyroScale:  250   500  1000  2000"<< endl;
+  cin >> gyroScale;
+  cout <<"Enter GyroScale:  2     4    8     16"<<endl;
+  cin >> accelScale;
+  cout << "Selected GyroScale: " << gyroScale << "   Selected AccelScale: " << accelScale << endl;
+  switch(gyroScale){
+  case 250:
+    system("i2cset 2 0x68 0x1B 0"); break;
+  case 500:
+    system("i2cset 2 0x68 0x1B 1"); break;
+  case 1000:
+    system("i2cset 2 0x68 0x1B 2"); break;
+  case 2000:
+    system("i2cset 2 0x68 0x1B 3"); break;
+  default:
+    break;
+  }
 
-  //+:Configure LED
+  switch(accelScale){
+  case 2:
+    system("i2cset 2 0x68 0x1C 0"); break;
+  case 4:
+    system("i2cset 2 0x68 0x1C 1"); break;
+  case 8:
+    system("i2cset 2 0x68 0x1C 2"); break;
+  case 16:
+    system("i2cset 2 0x68 0x1C 3"); break;
+  default:
+    break;
+  }
+
+  accelScale = 32768/accelScale;
+  gyroScale = 32768/gyroScale;
+
+  /*+:Configure LED
   std::fstream fs;
   fs.open ("/sys/kernel/debug/omap_mux/gpmc_ad4"); fs << "7"; fs.close();
   fs.open("/sys/class/gpio/export"); fs << 67; fs.close();
   fs.open("/sys/class/gpio/gpio67/direction"); fs << "out"; fs.close();
-        
+  fs.open("/sys/class/gpio/gpio67/value"); fs << "0"; fs.close();*/
+  
   //+: create export files
   ofstream out_XAccel,  out_YAccel,  out_ZAccel,
     out_XGyro, out_YGyro, out_ZGyro;
@@ -102,7 +138,7 @@ int main(){
   out_XGyro.open("Gyro_X.txt"); out_YGyro.open("Gyro_Y.txt"); out_ZGyro.open("Gyro_Z.txt");
 	
   while(true){
-    fs.open("/sys/class/gpio/gpio67/value"); fs << "0"; fs.close();
+    //fs.open("/sys/class/gpio/gpio67/value"); fs << "0"; fs.close();
     
     accel_x = stoi(get(deviceADDR, ACCEL_X_OUT_H), nullptr, 
 		   16) << 8 + stoi(get(deviceADDR, ACCEL_X_OUT_L), nullptr, 16);
@@ -110,15 +146,15 @@ int main(){
 		   16) << 8 + stoi(get(deviceADDR, ACCEL_Y_OUT_L), nullptr, 16);
     accel_z = stoi(get(deviceADDR, ACCEL_Z_OUT_H), nullptr, 
 		   16) << 8 + stoi(get(deviceADDR, ACCEL_Z_OUT_L), nullptr, 16);
-    accel_x = accel_x / 8192;
-    accel_y = accel_y / 8192;
-    accel_z = accel_z / 8192;
+    accel_x = accel_x / 500;
+    accel_y = accel_y / 500;
+    accel_z = accel_z / 500;
 
-    //+: LED Control
+    /*+: LED Control
     if(accel_x != 0) {
       cout << "condition is true" << endl;
       fs.open("/sys/class/gpio/gpio67/value"); fs << "1"; fs.close(); 
-    }
+      }*/
 
 
     gyro_x = stoi(get(deviceADDR, GYRO_X_OUT_H), nullptr, 
@@ -127,9 +163,9 @@ int main(){
 		  16) << 8 + stoi(get(deviceADDR, GYRO_Y_OUT_L), nullptr, 16);
     gyro_z = stoi(get(deviceADDR, GYRO_Z_OUT_H), nullptr, 
 		  16) << 8 + stoi(get(deviceADDR, GYRO_Z_OUT_L), nullptr, 16);
-    gyro_x = gyro_x / 66;
-    gyro_y = gyro_y / 66;
-    gyro_z = gyro_z / 66;
+    gyro_x = gyro_x / gyroScale;
+    gyro_y = gyro_y / gyroScale;
+    gyro_z = gyro_z / gyroScale;
 
     /*cout << "X-acc: " << accel_x << " Y-acc: " << accel_y << 
       " Z-acc: " << accel_z << endl;
