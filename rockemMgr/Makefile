@@ -1,21 +1,20 @@
 CC = g++
 CXX = g++
 
-CXXFLAGS = -g -Wall
+CFLAGS = -g -Wall -std=c++11 -I./BlackLib/BlackPWM -I./BlackLib/BlackI2C -I./BlackLib/BlackADC 
+LDFLAGS = -std=c++11
 
-game: gamemanager.o imureader.o armcontroller.o dodgecontroller.o bbcommands.o
+game: game.o ./BlackLib/BlackPWM/BlackPWM.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
 
-game.o: gamemanager.hh imureader.hh armcontroller.hh dodgecontroller.hh bbcommands.hh
+game.o:  
 
-gamemanager.o: imureader.hh armcontroller.hh dodgecontroller.hh bbcommands.hh
+BlackLib/BlackPWM/BlackPWM.o: 
+	make -C ./BlackLib
 
-imureader.o: imureader.hh bbcommands.hh
 
-armcontroller.o: armcontroller.hh bbcommands.hh
 
-dodgecontroller.o: dodgecontroller.hh bbcommands.hh
 
-bbcommands.o: bbcommands.hh
+robot.o:
 
 .PHONY: clean
 clean:
