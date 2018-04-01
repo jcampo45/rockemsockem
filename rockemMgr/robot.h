@@ -6,9 +6,24 @@
 class Robot{
 
 public:
-  /*
+  
   Robot(int player);
+  
+  short checkPunches();
+  void punch(short ps);
+  void checkHits();
+  void unpunch(short ps);
+  void dodge();
+  void update();
+  void die();
+  void win();
 
+  int points;
+  int pitchDodge;
+  int rollDodge;
+  
+private:
+  /*
   int leftPunch();
   int rightPunch();
   int rollDodge(int pos);
@@ -20,8 +35,6 @@ public:
   int checkRightPunch();
   int checkPitchDodge();
   int checkRollDodge();
-
-private:
 
   BlackLib::BlackI2C leftImu;
   BlackLib::BlackI2C rightImu;
