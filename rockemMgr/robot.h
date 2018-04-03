@@ -41,7 +41,10 @@ private:
   BlackLib::BlackI2C dodgeImu;
   BlackLib::BlackPWM dodgePitch;
   BlackLib::BlackPWM dodgeRoll;
-  BlackLib::BlackADC headShot;
-  BlackLib::BlackGPIO chestShot;
   */
+
+  BlackLib::BlackADC *headShotLat;
+  BlackLib::BlackADC *headShotAnt;
+  BlackLib::BlackGPIO *chestShot;
+
 };
