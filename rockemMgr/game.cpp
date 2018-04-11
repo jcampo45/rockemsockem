@@ -1,13 +1,16 @@
 #include "robot.h"
 
 int main(int argc, char **argv){
-  
+
+  printf("Initializing Robots\n");
   // Initialize left robot
   Robot leftRobot = Robot(1);
-
+  printf("Left Robto Initialized\n");
+  
   // Initialize right robot
   Robot rightRobot = Robot(2);
-
+  printf("Right Robto Initialized\n");
+  
   short lp, rp;
 
   // This loop must run slow enough to:
@@ -32,10 +35,12 @@ int main(int argc, char **argv){
     
     // Pause for extension
     usleep(1000);
-    
+
+    //    printf("Reading Hits\n");
     // Register hit
     leftRobot.checkHits();
     rightRobot.checkHits();
+    //    printf("Hits Read\n");
 
     // Retract
     leftRobot.unpunch(lp);

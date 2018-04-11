@@ -82,9 +82,9 @@ void Robot::punch(short ps){
 }
 
 void Robot::checkHits(){
-  int headlat = headShotLat->getNumericValue();
-  int headant = headShotAnt->getNumericValue();
-  points = points - headlat - headant;
+  int headlat = 0;//headShotLat->getNumericValue();
+  int headant = 0;//headShotAnt->getNumericValue();
+  points = points - headlat - headant - 10;
 }
 
 void Robot::unpunch(short ps){
