@@ -8,6 +8,7 @@ class Robot{
 public:
   
   Robot(int player);
+  ~Robot();
   
   short checkPunches();
   void punch(short ps);
@@ -36,15 +37,19 @@ private:
   int checkPitchDodge();
   int checkRollDodge();
 
-  BlackLib::BlackI2C leftImu;
+
   BlackLib::BlackI2C rightImu;
   BlackLib::BlackI2C dodgeImu;
   BlackLib::BlackPWM dodgePitch;
   BlackLib::BlackPWM dodgeRoll;
   */
 
+  BlackLib::BlackGPIO *imuSig0;
+  BlackLib::BlackGPIO *imuSig1;
+  BlackLib::BlackI2C *imuReader;
   BlackLib::BlackADC *headShotLat;
   BlackLib::BlackADC *headShotAnt;
   BlackLib::BlackGPIO *chestShot;
-
+  BlackLib::BlackGPIO *leftSol;
+  BlackLib::BlackGPIO *rightSol;
 };
