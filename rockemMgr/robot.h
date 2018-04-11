@@ -1,7 +1,7 @@
-#include "BlackLib/BlackPWM/BlackPWM.h"
-#include "BlackLib/BlackGPIO/BlackGPIO.h"
-#include "BlackLib/BlackI2C/BlackI2C.h"
-#include "BlackLib/BlackADC/BlackADC.h"
+#include "BlackPWM.h"
+#include "BlackGPIO.h"
+#include "BlackI2C.h"
+#include "BlackADC.h"
 
 class Robot{
 

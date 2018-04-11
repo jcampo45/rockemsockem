@@ -38,15 +38,15 @@ Robot::Robot(int x): points(100), pitchDodge(0), rollDodge(0){
     rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_65, BlackLib::output, BlackLib::FastMode);
 
   }
-  
+
+  imuReader->open(BlackLib::ReadWrite);  
+
   imuSig0->setValue(BlackLib::low);
   imuSig1->setValue(BlackLib::low);
-  imuReader->open(BlackLib::ReadWrite);
   imuReader->writeByte(PWR_MGMT_1, 0);
   
   imuSig0->setValue(BlackLib::high);
   imuSig1->setValue(BlackLib::low);
-  imuReader->open(BlackLib::ReadWrite);
   imuReader->writeByte(PWR_MGMT_1, 0);
 
 }
