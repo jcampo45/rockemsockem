@@ -167,7 +167,7 @@ namespace BlackLib
         }
     }
 
-    uint8_t BlackI2C::readByte(uint8_t registerAddr)
+    int8_t BlackI2C::readByte(uint8_t registerAddr)
     {
         this->setSlave();
 

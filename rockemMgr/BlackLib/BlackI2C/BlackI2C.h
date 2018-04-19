@@ -57,8 +57,9 @@ namespace BlackLib
     * This enum is used for setting i2c name.
     */
     enum i2cName            {   I2C_0                   = 0,
-                                I2C_1                   = 1
-                            };
+                                I2C_1                   = 1,
+				I2C_2                   = 2
+    };
 
     /*!
     * This enum is used for selecting i2c bus transaction type.
@@ -574,7 +575,7 @@ namespace BlackLib
             * @par Example
             *   Example usage is shown in BlackI2C::writeByte() function's example.
             */
-            uint8_t     readByte(uint8_t registerAddr);
+            int8_t     readByte(uint8_t registerAddr);
 
             /*! @brief Read word value from i2c smbus.
             *
