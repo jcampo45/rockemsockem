@@ -7,17 +7,19 @@ LDFLAGS = -std=c++11
 
 game: robot.o ./BlackLib/BlackPWM/BlackPWM.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
 
-solenoid: solenoid.o ./BlackLib/BlackPWM/BlackPWM.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
+solenoid: solenoid.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
 
-imuRead: imuRead.o ./BlackLib/BlackPWM/BlackPWM.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
+punchTest: punchTest.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
 
-muxImuRead: muxImuRead.o ./BlackLib/BlackPWM/BlackPWM.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
+imuRead: imuRead.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackCore.o
 
-joystickRead: joystickRead.o ./BlackLib/BlackPWM/BlackPWM.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
+#muxImuRead: muxImuRead.o ./BlackLib/BlackPWM/BlackPWM.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
+
+joystickRead: joystickRead.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackCore.o
 
 game.o:  
 
-BlackLib/BlackPWM/BlackPWM.o: 
+BlackLib/BlackCore.o: 
 	make -C ./BlackLib
 
 robot.o: robot.h
@@ -26,5 +28,8 @@ robot.o: robot.h
 clean:
 	rm *.o game
 
-.PHONY: all
+.PHONY: default
 all: clean game
+
+.PHONY: all 
+default: clean game solenoid punchTest imuRead joystickRead
