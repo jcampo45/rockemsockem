@@ -11,11 +11,15 @@ solenoid: solenoid.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
 
 punchTest: punchTest.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
 
+onePunch: onePunch.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
+
 imuRead: imuRead.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackCore.o
 
 #muxImuRead: muxImuRead.o ./BlackLib/BlackPWM/BlackPWM.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
 
 joystickRead: joystickRead.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackCore.o
+
+buttonTest: ./BlackLib/BlackCore.o ./BlackLib/BlackGPIO/BlackGPIO.o
 
 game.o:  
 

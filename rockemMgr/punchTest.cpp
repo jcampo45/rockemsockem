@@ -15,27 +15,31 @@ int main(int argc, char **argv){
   uint8_t thresh    = atoi(argv[2]);
 
   BlackLib::BlackI2C muxWriter(BlackLib::I2C_2, muxAddr);
-  BlackLib::BlackI2C imuReader(BlackLib::I2C_2, imuAddr);
   
   BlackLib::BlackGPIO solenoidR(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
   BlackLib::BlackGPIO solenoidL(BlackLib::GPIO_68, BlackLib::output, BlackLib::FastMode);
   
   muxWriter.writeByte(0x00, 0x01);
+  BlackLib::BlackI2C imuReader(BlackLib::I2C_2, imuAddr);
   imuReader.writeByte(0x6B, 0);
 
   muxWriter.writeByte(0x00, 0x02);
+  BlackLib::BlackI2C imuReader(BlackLib::I2C_2, imuAddr);
   imuReader.writeByte(0x6B, 0);
 
   int val;
   while(1){
     
     muxWriter.writeByte(0x00,0x01);
+  BlackLib::BlackI2C imuReader(BlackLib::I2C_2, imuAddr);    
     val = imuReader.readByte(readAddr);
+    std::cout<<val<<std::endl;
     if(abs(val) > thresh){
       solenoidL.setValue(BlackLib::high);
     }
 
     muxWriter.writeByte(0x00,0x02);
+      BlackLib::BlackI2C imuReader(BlackLib::I2C_2, imuAddr);
     val = imuReader.readByte(readAddr);
     if(abs(val) > thresh){
       solenoidR.setValue(BlackLib::high);
