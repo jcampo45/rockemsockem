@@ -1,7 +1,8 @@
 #include "robot.h"
 
-const int thresh = 50;
-const uint8_t imuADDR = 0x68;
+const int thresh = 90;
+const uint8_t muxAddr = 0x70;
+const uint8_t imuAddr = 0x68;
 const uint8_t PWR_MGMT_1 = 0x6B;
 const uint8_t ACCEL_X_OUT_H = 0x3B;
 const uint8_t ACCEL_X_OUT_L = 0x3C;
@@ -21,32 +22,43 @@ Robot::Robot(int x): points(100), pitchDodge(0), rollDodge(0){
 
     headShotLat = new BlackLib::BlackADC(BlackLib::AIN0);
     headShotAnt = new BlackLib::BlackADC(BlackLib::AIN1);
-    imuReader   = new BlackLib::BlackI2C(BlackLib::I2C_1, imuADDR);
-    imuSig0     = new BlackLib::BlackGPIO(BlackLib::GPIO_40, BlackLib::output, BlackLib::FastMode);
+    leftImu     = 0x01;
+    rightImu    = 0x02;
+    headImu     = 0x03;
     imuSig1     = new BlackLib::BlackGPIO(BlackLib::GPIO_51, BlackLib::output, BlackLib::FastMode);
     leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
     rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_68, BlackLib::output, BlackLib::FastMode);
+    headSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
     
   }else{
 
-    headShotLat = new BlackLib::BlackADC(BlackLib::AIN2);
-    headShotAnt = new BlackLib::BlackADC(BlackLib::AIN3);
-    imuReader   = new BlackLib::BlackI2C(BlackLib::I2C_0, imuADDR);
-    imuSig0     = new BlackLib::BlackGPIO(BlackLib::GPIO_31, BlackLib::output, BlackLib::FastMode);
-    imuSig1     = new BlackLib::BlackGPIO(BlackLib::GPIO_48, BlackLib::output, BlackLib::FastMode);
-    leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_46, BlackLib::output, BlackLib::FastMode);
-    rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_65, BlackLib::output, BlackLib::FastMode);
+    headShotLat = new BlackLib::BlackADC(BlackLib::AIN0);
+    headShotAnt = new BlackLib::BlackADC(BlackLib::AIN1);
+    leftImu     = 0x01;
+    rightImu    = 0x02;
+    headImu     = 0x03;
+    imuSig1     = new BlackLib::BlackGPIO(BlackLib::GPIO_51, BlackLib::output, BlackLib::FastMode);
+    leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
+    rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_68, BlackLib::output, BlackLib::FastMode);
+    headSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
 
   }
 
+  imuReader   = new BlackLib::BlackI2C(BlackLib::I2C_2, muxAddr);
   imuReader->open(BlackLib::ReadWrite);  
 
-  imuSig0->setValue(BlackLib::low);
-  imuSig1->setValue(BlackLib::low);
+  imuReader->writeByte(leftImu);
+  imuReader->changeAddress(imuAddr);
   imuReader->writeByte(PWR_MGMT_1, 0);
-  
-  imuSig0->setValue(BlackLib::high);
-  imuSig1->setValue(BlackLib::low);
+
+  imuReader->writeByte(muxAddr);
+  imuReader->writeByte(rightImu);
+  imuReader->changeAddress(imuAddr);
+  imuReader->writeByte(PWR_MGMT_1, 0);
+
+  imuReader->writeByte(muxAddr);
+  imuReader->writeByte(headImu);
+  imuReader->changeAddress(imuAddr);
   imuReader->writeByte(PWR_MGMT_1, 0);
 
 }

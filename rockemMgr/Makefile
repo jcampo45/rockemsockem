@@ -5,7 +5,7 @@ CFLAGS = -g -Wall -std=c++11 -I./BlackLib/BlackPWM -I./BlackLib/BlackI2C -I./Bla
 CXXFLAGS = $(CFLAGS)
 LDFLAGS = -std=c++11
 
-game: robot.o ./BlackLib/BlackPWM/BlackPWM.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
+game: robot.o display.o ./BlackLib/BlackPWM/BlackPWM.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
 
 solenoid: solenoid.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
 
@@ -24,6 +24,7 @@ BlackLib/BlackCore.o:
 
 robot.o: robot.h
 
+display.o: display.h
 .PHONY: clean
 clean:
 	rm *.o game

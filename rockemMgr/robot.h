@@ -10,9 +10,9 @@ public:
   Robot(int player);
   ~Robot();
   
-  short checkPunches();
+  short checkPunches(int us);
   void punch(short ps);
-  void checkHits();
+  void checkHits(int us);
   void unpunch(short ps);
   void dodge();
   void update();
@@ -20,36 +20,24 @@ public:
   void win();
 
   int points;
-  int pitchDodge;
-  int rollDodge;
-  
+  int pitchPos;
+  int rollPos;
+  int leftImu;
+  int rightImu;
+  int headImu;
+
 private:
-  /*
-  int leftPunch();
-  int rightPunch();
-  int rollDodge(int pos);
-  int pitchDodge(int po);
 
-  int checkHead();
-  int checkChest();
-  int checkLeftPunch();
-  int checkRightPunch();
-  int checkPitchDodge();
-  int checkRollDodge();
-
-
-  BlackLib::BlackI2C rightImu;
-  BlackLib::BlackI2C dodgeImu;
-  BlackLib::BlackPWM dodgePitch;
-  BlackLib::BlackPWM dodgeRoll;
-  */
-
-  BlackLib::BlackGPIO *imuSig0;
-  BlackLib::BlackGPIO *imuSig1;
   BlackLib::BlackI2C *imuReader;
-  BlackLib::BlackADC *headShotLat;
-  BlackLib::BlackADC *headShotAnt;
-  BlackLib::BlackGPIO *chestShot;
+  BlackLib::BlackADC *headShotSide;
+  BlackLib::BlackADC *headShotFront;
+  BlackLib::BlackGPIO *chest1;
+  BlackLib::BlackGPIO *chest2;
+  BlackLib::BlackGPIO *chest3;
   BlackLib::BlackGPIO *leftSol;
   BlackLib::BlackGPIO *rightSol;
+  BlackLib::BlackGPIO *headSol;
+  BlackLib::BlackPWM *pitchServo;
+  BlackLib::BlackPWM *rollServo;
+
 };
