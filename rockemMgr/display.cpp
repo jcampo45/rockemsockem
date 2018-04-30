@@ -30,13 +30,23 @@ Display::Display(){
   this->init();
   this->hello();
   this->flash();
+
 }
 
 void Display::init(){
+
+  disp->open( BlackLib::ReadWrite | BlackLib::NonBlock );
   
-  disp->writeByte(0x21, 1);
+  bool i=true;
+  i = disp->writeByte(0x21, 1);
+  if (!i)
+    printf("osc write fail");
   disp->writeByte(0x81, 1);
+  if (!i)
+    printf("solid write fail");
   disp->writeByte(0xEF, 1);
+  if (!i)
+    printf("bright write fail");
   
 }
 
@@ -66,4 +76,10 @@ void Display::hello(){
 
   this->set('H',1,':','H',1);
 
+}
+
+Display::~Display(){
+
+  delete disp;
+  
 }

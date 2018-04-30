@@ -22,9 +22,9 @@ Robot::Robot(int x): points(100), pitchDodge(0), rollDodge(0){
 
     headShotLat = new BlackLib::BlackADC(BlackLib::AIN0);
     headShotAnt = new BlackLib::BlackADC(BlackLib::AIN1);
-    leftImu     = 0x01;
-    rightImu    = 0x02;
-    headImu     = 0x03;
+    leftImu     = 1 << 0;
+    rightImu    = 1 << 1;
+    headImu     = 1 << 2;
     imuSig1     = new BlackLib::BlackGPIO(BlackLib::GPIO_51, BlackLib::output, BlackLib::FastMode);
     leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
     rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_68, BlackLib::output, BlackLib::FastMode);
@@ -34,9 +34,9 @@ Robot::Robot(int x): points(100), pitchDodge(0), rollDodge(0){
 
     headShotLat = new BlackLib::BlackADC(BlackLib::AIN0);
     headShotAnt = new BlackLib::BlackADC(BlackLib::AIN1);
-    leftImu     = 0x01;
-    rightImu    = 0x02;
-    headImu     = 0x03;
+    leftImu     = 1 << 3;
+    rightImu    = 1 << 4;
+    headImu     = 1 << 5;
     imuSig1     = new BlackLib::BlackGPIO(BlackLib::GPIO_51, BlackLib::output, BlackLib::FastMode);
     leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
     rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_68, BlackLib::output, BlackLib::FastMode);
