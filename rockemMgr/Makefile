@@ -5,7 +5,7 @@ CFLAGS = -g -Wall -std=c++11 -I./BlackLib/BlackPWM -I./BlackLib/BlackI2C -I./Bla
 CXXFLAGS = $(CFLAGS)
 LDFLAGS = -std=c++11
 
-game: robot.o display.o ./BlackLib/BlackPWM/BlackPWM.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
+game: robot.o display.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o ./BlackLib/BlackPWM/BlackPWM.o
 
 multiReadTest: multiReadTest.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackCore.o
 
@@ -16,6 +16,8 @@ punchTest: punchTest.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackGPIO/Black
 onePunch: onePunch.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
 
 imuRead: imuRead.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackCore.o
+
+motionTrace: motionTrace.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackCore.o
 
 displayTest: display.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackCore.o
 

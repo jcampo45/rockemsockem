@@ -1,4 +1,5 @@
 #include "robot.h"
+#include "display.h"
 
 int main(int argc, char **argv){
 
@@ -11,6 +12,12 @@ int main(int argc, char **argv){
   Robot rightRobot = Robot(2);
   printf("Right Robto Initialized\n");
   
+  // Initialize display
+  Display disp = Display();
+  printf("Display Initialized");
+
+  disp.set(leftRobot.points/10, leftRobot.points%10, ':', rightRobot.points/10, rightRobot.points%10);
+
   short lp, rp;
 
   // This loop must run slow enough to:
@@ -50,9 +57,7 @@ int main(int argc, char **argv){
     leftRobot.dodge();
     rightRobot.dodge();
 
-    // Update display
-    leftRobot.update();
-    rightRobot.update();
+    disp.set(leftRobot.points/10, leftRobot.points%10, ':', rightRobot.points/10, rightRobot.points%10);
     
   }
 

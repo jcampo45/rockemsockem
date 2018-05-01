@@ -10,9 +10,9 @@ public:
   Robot(int player);
   ~Robot();
   
-  short checkPunches(int us);
+  short checkPunches();
   void punch(short ps);
-  void checkHits(int us);
+  void checkHits();
   void unpunch(short ps);
   void dodge();
   void update();
@@ -20,8 +20,8 @@ public:
   void win();
 
   int points;
-  int pitchPos;
-  int rollPos;
+  int pitchPos[3];
+  int rollPos[3];
   int leftImu;
   int rightImu;
   int headImu;
@@ -29,8 +29,8 @@ public:
 private:
 
   BlackLib::BlackI2C *imuReader;
-  BlackLib::BlackADC *headShotSide;
-  BlackLib::BlackADC *headShotFront;
+  BlackLib::BlackADC *headShotLR;
+  BlackLib::BlackADC *headShotFB;
   BlackLib::BlackGPIO *chest1;
   BlackLib::BlackGPIO *chest2;
   BlackLib::BlackGPIO *chest3;
