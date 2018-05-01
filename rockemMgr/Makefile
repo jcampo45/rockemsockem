@@ -15,6 +15,8 @@ punchTest: punchTest.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackGPIO/Black
 
 onePunch: onePunch.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackGPIO/BlackGPIO.o ./BlackLib/BlackCore.o
 
+servoTest: servoTest.o ./BlackLib/BlackPWM/BlackPWM.o ./BlackLib/BlackCore.o
+
 imuRead: imuRead.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackCore.o
 
 motionTrace: motionTrace.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackCore.o
