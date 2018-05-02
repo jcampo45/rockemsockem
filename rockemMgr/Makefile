@@ -1,4 +1,4 @@
-CC = g++
+BCC = g++
 CXX = g++
 
 CFLAGS = -g -Wall -std=c++11 -I./BlackLib/BlackPWM -I./BlackLib/BlackI2C -I./BlackLib/BlackADC -I./BlackLib/BlackGPIO 
@@ -30,6 +30,8 @@ joystickRead: joystickRead.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackCore
 buttonTest: ./BlackLib/BlackCore.o ./BlackLib/BlackGPIO/BlackGPIO.o
 
 game.o:  
+
+pwmTest: pwm.o
 
 BlackLib/BlackCore.o: 
 	make -C ./BlackLib
