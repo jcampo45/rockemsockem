@@ -55,10 +55,10 @@ namespace BlackLib
     /*!
     * This enum is used for selecting GPIO number.
     */
-    enum gpioName           {   GPIO_125=125,   GPIO_123=123,
+    enum gpioName           {   GPIO_115=115,   GPIO_123=123,
 				GPIO_113=113,
                                 GPIO_122=122,   GPIO_121=121,
-                                GPIO_120=120,   GPIO_117=117,
+                                GPIO_112=112,   GPIO_117=117,
                                 GPIO_49=49,     GPIO_15=15,
                                 GPIO_48=48,     GPIO_51=51,
                                 GPIO_20=20,     GPIO_38=38,

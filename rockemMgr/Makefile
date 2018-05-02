@@ -21,6 +21,8 @@ imuRead: imuRead.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackCore.o
 
 motionTrace: motionTrace.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackCore.o
 
+harnessTest: harnessTest.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackCore.o
+
 displayTest: display.o ./BlackLib/BlackI2C/BlackI2C.o ./BlackLib/BlackCore.o
 
 joystickRead: joystickRead.o ./BlackLib/BlackADC/BlackADC.o ./BlackLib/BlackCore.o
@@ -37,7 +39,7 @@ robot.o: robot.h
 display.o: display.h
 .PHONY: clean
 clean:
-	rm *.o game
+	rm *.o game multiReadTest solenoid punchTest onePunch servoTest imuRead motionTrace displayTest joystickRead buttonTest -rf
 
 .PHONY: default
 all: clean game

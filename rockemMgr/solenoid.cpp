@@ -12,27 +12,27 @@ int main(int argc, char **argv){
 
   while(1){
     solenoidBL.setValue(BlackLib::high);
-    usleep(100000);
+    usleep(500000);
     solenoidBL.setValue(BlackLib::low);
     sleep(1);
     solenoidBR.setValue(BlackLib::high);
-    usleep(100000);
+    usleep(500000);
     solenoidBR.setValue(BlackLib::low);
     sleep(1);
     solenoidBH.setValue(BlackLib::high);
-    usleep(100000);
+    usleep(500000);
     solenoidBH.setValue(BlackLib::low);
     sleep(1);
     solenoidRR.setValue(BlackLib::high);
-    usleep(100000);
+    usleep(500000);
     solenoidRR.setValue(BlackLib::low);
     sleep(1);
     solenoidRL.setValue(BlackLib::high);
-    usleep(100000);
+    usleep(500000);
     solenoidRL.setValue(BlackLib::low);
     sleep(1);
     solenoidRH.setValue(BlackLib::high);
-    usleep(100000);
+    usleep(500000);
     solenoidRH.setValue(BlackLib::low);
     sleep(1);
   }

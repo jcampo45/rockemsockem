@@ -4,8 +4,8 @@
 
 int main(int argc, char **argv){
   BlackLib::BlackGPIO rc1(BlackLib::GPIO_49, BlackLib::input);
-  BlackLib::BlackGPIO rc2(BlackLib::GPIO_117, BlackLib::input);
-  BlackLib::BlackGPIO rc3(BlackLib::GPIO_125, BlackLib::input);
+  BlackLib::BlackGPIO rc2(BlackLib::GPIO_115, BlackLib::input);
+  BlackLib::BlackGPIO rc3(BlackLib::GPIO_112, BlackLib::input);
   BlackLib::BlackGPIO bc1(BlackLib::GPIO_26, BlackLib::input);
   BlackLib::BlackGPIO bc2(BlackLib::GPIO_46, BlackLib::input);
   BlackLib::BlackGPIO bc3(BlackLib::GPIO_65, BlackLib::input);

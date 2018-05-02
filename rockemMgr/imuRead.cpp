@@ -18,7 +18,9 @@ int main(int argc, char **argv){
   BlackLib::BlackI2C imuReader(iport, imuAddr);
   std::cout << imuReader.open(BlackLib::ReadWrite) << std::endl;
   imuReader.writeByte(0x6B, 0);
-
+  imuReader.writeByte(0x1B, 0);
+  imuReader.writeByte(0x1B, 0);
+  
   int val;
   while(1){
     usleep(100000);

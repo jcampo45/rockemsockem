@@ -80,6 +80,7 @@ void Display::hello(){
 
 Display::~Display(){
 
+  disp->writeByte(0x20,1);
   delete disp;
   
 }
