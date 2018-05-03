@@ -29,7 +29,7 @@ Display::Display(){
 
   this->init();
   this->hello();
-  this->flash();
+  this->solid();
 
 }
 

@@ -1,15 +1,15 @@
 #include "robot.h"
 
 const int punchThresh        = 90;
-const int leftThresh         = 40;
-const int rightThresh        = -40;
-const int frontThresh        = 40;
-const int backThresh         = -40; 
+const int leftThresh         = 27;
+const int rightThresh        = -27;
+const int frontThresh        = 13;
+const int backThresh         = -13; 
 
-const int rollsR[3]          = {60,50,40};
-const int pitchesR[3]        = {60,50,40};
-const int rollsB[3]          = {60,50,40};
-const int pitchesB[3]        = {60,50,40};
+const int rollsB[3]          = {2000000,1750000,1600000};
+const int pitchesB[3]        = {1000000,960000,900000};
+const int rollsR[3]          = {2000000,1100000,1200000};
+const int pitchesR[3]        = {2000000,1100000,1200000};
 
 const uint8_t muxAddr        = 0x70;
 const uint8_t imuAddr        = 0x68;
@@ -27,40 +27,20 @@ const uint8_t GYRO_Y_OUT_L   = 0x46;
 const uint8_t GYRO_Z_OUT_H   = 0x47;
 const uint8_t GYRO_Z_OUT_L   = 0x48;
 
-Robot::Robot(int x): points(25){
+Robot::Robot(int x): points(75){
   
   if(x==1){
 
     headShotFB  = new BlackLib::BlackADC(BlackLib::AIN0);
     headShotLR  = new BlackLib::BlackADC(BlackLib::AIN2);
-    chest1      = new BlackLib::BlackGPIO(BlackLib::GPIO_49, BlackLib::output, BlackLib::FastMode);
-    chest2      = new BlackLib::BlackGPIO(BlackLib::GPIO_117, BlackLib::output, BlackLib::FastMode);
-    chest3      = new BlackLib::BlackGPIO(BlackLib::GPIO_125, BlackLib::output, BlackLib::FastMode);
-    leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_15, BlackLib::output, BlackLib::FastMode);
-    rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_14, BlackLib::output, BlackLib::FastMode);
-    headSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_113, BlackLib::output, BlackLib::FastMode);
-    pitchServo  = new BlackLib::BlackPWM(BlackLib::P9_14);
-    rollServo   = new BlackLib::BlackPWM(BlackLib::P9_16);
-
-    leftImu     = 1 << 0;
-    rightImu    = 1 << 1;
-    headImu     = 1 << 2;
-
-    std::copy(pitchesB, pitchesB+3, pitchPos);
-    std::copy(rollsB, rollsB+3, rollPos);
-    
-  }else{
-
-    headShotFB  = new BlackLib::BlackADC(BlackLib::AIN1);
-    headShotLR  = new BlackLib::BlackADC(BlackLib::AIN3);
-    chest1      = new BlackLib::BlackGPIO(BlackLib::GPIO_26, BlackLib::output, BlackLib::FastMode);
-    chest2      = new BlackLib::BlackGPIO(BlackLib::GPIO_46, BlackLib::output, BlackLib::FastMode);
-    chest3      = new BlackLib::BlackGPIO(BlackLib::GPIO_65, BlackLib::output, BlackLib::FastMode);
-    leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
-    rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_68, BlackLib::output, BlackLib::FastMode);
-    headSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_44, BlackLib::output, BlackLib::FastMode);
-    pitchServo  = new BlackLib::BlackPWM(BlackLib::P8_13);
-    rollServo   = new BlackLib::BlackPWM(BlackLib::P8_19);
+    chest1      = new BlackLib::BlackGPIO(BlackLib::GPIO_49, BlackLib::input, BlackLib::FastMode);
+    chest2      = new BlackLib::BlackGPIO(BlackLib::GPIO_115, BlackLib::input, BlackLib::FastMode);
+    chest3      = new BlackLib::BlackGPIO(BlackLib::GPIO_112, BlackLib::input, BlackLib::FastMode);
+    leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_2, BlackLib::output, BlackLib::FastMode);
+    rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_15, BlackLib::output, BlackLib::FastMode);
+    headSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_14, BlackLib::output, BlackLib::FastMode);
+    pitchServo  = new PWM("pwmchip2/", "pwm0/");
+    rollServo   = new PWM("pwmchip0/", "pwm1/");
 
     leftImu     = 1 << 3;
     rightImu    = 1 << 4;
@@ -69,8 +49,36 @@ Robot::Robot(int x): points(25){
     std::copy(pitchesB, pitchesB+3, pitchPos);
     std::copy(rollsB, rollsB+3, rollPos);
     
+  }else{
+
+    headShotFB  = new BlackLib::BlackADC(BlackLib::AIN1);
+    headShotLR  = new BlackLib::BlackADC(BlackLib::AIN3);
+    chest1      = new BlackLib::BlackGPIO(BlackLib::GPIO_26, BlackLib::input, BlackLib::FastMode);
+    chest2      = new BlackLib::BlackGPIO(BlackLib::GPIO_46, BlackLib::input, BlackLib::FastMode);
+    chest3      = new BlackLib::BlackGPIO(BlackLib::GPIO_65, BlackLib::input, BlackLib::FastMode);
+    leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
+    rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_68, BlackLib::output, BlackLib::FastMode);
+    headSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_44, BlackLib::output, BlackLib::FastMode);
+    pitchServo  = new PWM("pwmchip4/", "pwm0/");
+    rollServo   = new PWM("pwmchip4/", "pwm1/");
+
+    leftImu     = 1 << 0;
+    rightImu    = 1 << 1;
+    headImu     = 1 << 2;
+
+    std::copy(pitchesB, pitchesB+3, pitchPos);
+    std::copy(rollsB, rollsB+3, rollPos);
+    
   }
 
+  pitchServo->setPeriod(20000000);
+  pitchServo->setDutyCycle(pitchPos[1]);
+  pitchServo->enable();
+  
+  rollServo->setPeriod(20000000);
+  rollServo->setDutyCycle(rollPos[1]);
+  rollServo->enable();
+  
   imuReader = new BlackLib::BlackI2C(BlackLib::I2C_2, muxAddr);
   imuReader->open(BlackLib::ReadWrite);  
 
@@ -87,22 +95,25 @@ Robot::Robot(int x): points(25){
   imuReader->writeByte(0, headImu);
   imuReader->setDeviceAddress(imuAddr);
   imuReader->writeByte(PWR_MGMT_1, 0);
-
+  imuReader->writeByte(0x1B, 0);
+  imuReader->writeByte(0x1C, 0);
+  
 }
 
 short Robot::checkPunches(){
-
+  
+    
   imuReader->setDeviceAddress(muxAddr);
   imuReader->writeByte(0, leftImu);
   imuReader->setDeviceAddress(imuAddr);
   
-  int8_t left = imuReader->readByte(ACCEL_X_OUT_H);
+  int8_t left = imuReader->readByte(GYRO_Z_OUT_H);
 
   imuReader->setDeviceAddress(muxAddr);
   imuReader->writeByte(0, rightImu);
   imuReader->setDeviceAddress(imuAddr);
 
-  int8_t right = imuReader->readByte(ACCEL_X_OUT_H);
+  int8_t right = imuReader->readByte(GYRO_Z_OUT_H);
   
   short result = 0;
 
@@ -113,7 +124,10 @@ short Robot::checkPunches(){
   if (right > punchThresh){
     result = result + 1;
   }
-
+  
+  //  _lastLeft = left;
+  //  _lastRight = right;
+  
   return result;
 
 }
@@ -135,7 +149,7 @@ void Robot::checkHits(){
   int c2      = chest2->getNumericValue();
   int c3      = chest3->getNumericValue();
 
-  points      = points - std::max(5,headlat+headant) - c1 - c2 - c3;
+  points      = points - std::min(5,headlat+headant) - c1 - c2 - c3;
 
 }
 
@@ -153,25 +167,36 @@ void Robot::unpunch(short ps){
 void Robot::dodge(){
   
   imuReader->setDeviceAddress(muxAddr);
-  imuReader->writeByte(0, leftImu);
+  imuReader->writeByte(0, headImu);
   imuReader->setDeviceAddress(imuAddr);
   
-  int8_t dodgeLR = imuReader->readByte(ACCEL_X_OUT_H);
-  int8_t dodgeFB = imuReader->readByte(ACCEL_Z_OUT_H);
+  int dodgeLR = imuReader->readByte(ACCEL_X_OUT_H);
+  int dodgeFB = imuReader->readByte(ACCEL_Z_OUT_H);
+  //  std::cout<<dodgeLR<<std::endl;
 
-  if (dodgeFB > frontThresh){}
-    //    pitchServo->;
-  if (dodgeFB < backThresh){}
-    //pitchServo->;
-  if ((frontThresh > dodgeFB) && (dodgeFB > backThresh)){}
-    //pitchServo->;
+  if (dodgeFB >= frontThresh){
+    std::cout<<"front"<<std::endl;
+    pitchServo->setDutyCycle(pitchPos[0]);
+  }
+  if (dodgeFB <= backThresh){
+    std::cout<<"back"<<std::endl;
+    pitchServo->setDutyCycle(pitchPos[2]);
+  }
+  if ((frontThresh > dodgeFB) && (dodgeFB > backThresh)){
+    pitchServo->setDutyCycle(pitchPos[1]);
+  }
   
-  if (dodgeLR > leftThresh){}
-    //rollServo->;
-  if (dodgeLR < rightThresh){}
-    //rollServo->;
-  if ((leftThresh > dodgeLR) && (dodgeLR > rightThresh)){}
-    //rollServo->;
+  if (dodgeLR >= leftThresh){
+    std::cout<<"left"<<std::endl;
+    rollServo->setDutyCycle(rollPos[0]);
+  }
+  if (dodgeLR <= rightThresh){
+    std::cout<<"right"<<std::endl;
+    rollServo->setDutyCycle(rollPos[2]);
+  }
+  if ((leftThresh > dodgeLR) && (dodgeLR > rightThresh)){
+    rollServo->setDutyCycle(rollPos[1]);
+  }
 }
 
 void Robot::die(){

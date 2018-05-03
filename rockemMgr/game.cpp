@@ -1,5 +1,6 @@
 #include "robot.h"
 #include "display.h"
+#include "pwm.h"
 
 int main(int argc, char **argv){
 
@@ -14,7 +15,7 @@ int main(int argc, char **argv){
   
   // Initialize display
   Display disp = Display();
-  printf("Display Initialized");
+  printf("Display Initialized\n");
 
   disp.set(leftRobot.points/10, leftRobot.points%10, ':', rightRobot.points/10, rightRobot.points%10);
 
@@ -41,7 +42,7 @@ int main(int argc, char **argv){
     rightRobot.punch(rp);
     
     // Pause for extension
-    usleep(1000);
+    usleep(150000);
 
     //    printf("Reading Hits\n");
     // Register hit

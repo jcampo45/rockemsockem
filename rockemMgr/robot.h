@@ -1,4 +1,4 @@
-#include "BlackPWM.h"
+#include "pwm.h"
 #include "BlackGPIO.h"
 #include "BlackI2C.h"
 #include "BlackADC.h"
@@ -37,7 +37,7 @@ private:
   BlackLib::BlackGPIO *leftSol;
   BlackLib::BlackGPIO *rightSol;
   BlackLib::BlackGPIO *headSol;
-  BlackLib::BlackPWM *pitchServo;
-  BlackLib::BlackPWM *rollServo;
+  PWM *pitchServo;
+  PWM *rollServo;
 
 };
