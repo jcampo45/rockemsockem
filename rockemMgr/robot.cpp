@@ -1,15 +1,16 @@
+
 #include "robot.h"
 
-const int punchThresh        = 90;
+const int punchThresh        = 80;
 const int leftThresh         = 27;
 const int rightThresh        = -27;
-const int frontThresh        = 13;
-const int backThresh         = -13; 
+const int frontThresh        = 22;
+const int backThresh         = -22; 
 
-const int rollsB[3]          = {2000000,1750000,1600000};
+const int rollsB[3]          = {1900000,1750000,1650000};
 const int pitchesB[3]        = {1000000,960000,900000};
-const int rollsR[3]          = {2000000,1100000,1200000};
-const int pitchesR[3]        = {2000000,1100000,1200000};
+const int rollsR[3]          = {1750000,1550000,1350000};
+const int pitchesR[3]        = {2400000,2350000,2280000};
 
 const uint8_t muxAddr        = 0x70;
 const uint8_t imuAddr        = 0x68;
@@ -59,15 +60,15 @@ Robot::Robot(int x): points(75){
     leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
     rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_68, BlackLib::output, BlackLib::FastMode);
     headSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_44, BlackLib::output, BlackLib::FastMode);
-    pitchServo  = new PWM("pwmchip4/", "pwm0/");
-    rollServo   = new PWM("pwmchip4/", "pwm1/");
+    pitchServo  = new PWM("pwmchip5/", "pwm0/");
+    rollServo   = new PWM("pwmchip5/", "pwm1/");
 
     leftImu     = 1 << 0;
     rightImu    = 1 << 1;
     headImu     = 1 << 2;
 
-    std::copy(pitchesB, pitchesB+3, pitchPos);
-    std::copy(rollsB, rollsB+3, rollPos);
+    std::copy(pitchesR, pitchesR+3, pitchPos);
+    std::copy(rollsR, rollsR+3, rollPos);
     
   }
 
