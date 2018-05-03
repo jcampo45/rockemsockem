@@ -24,7 +24,8 @@ Display::Display(){
   lib['F'] = 0x71;
   lib['h'] = 0x74;
   lib['H'] = 0x76;
-
+  lib['n'] = 0x00;
+  
   disp = new BlackLib::BlackI2C(BlackLib::I2C_2, 0x72);
 
   this->init();

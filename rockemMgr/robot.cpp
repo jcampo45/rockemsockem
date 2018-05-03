@@ -9,8 +9,8 @@ const int backThresh         = -13;
 
 const int rollsB[3]          = {1900000,1750000,1650000};
 const int pitchesB[3]        = {1000000,960000,900000};
-const int rollsR[3]          = {1350000,1550000,1750000};
-const int pitchesR[3]        = {2400000,2350000,2280000};
+const int rollsR[3]          = {1750000,1550000,1350000};
+const int pitchesR[3]        = {2280000,2350000,2400000};
 
 const uint8_t muxAddr        = 0x70;
 const uint8_t imuAddr        = 0x68;
@@ -31,7 +31,7 @@ const uint8_t GYRO_Z_OUT_L   = 0x48;
 int curFB = 1;
 int curLR = 1;
 
-Robot::Robot(int x): points(75){
+Robot::Robot(int x): points(5){
   
   if(x==1){
 
@@ -43,8 +43,8 @@ Robot::Robot(int x): points(75){
     leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_2, BlackLib::output, BlackLib::FastMode);
     rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_15, BlackLib::output, BlackLib::FastMode);
     headSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_14, BlackLib::output, BlackLib::FastMode);
-    pitchServo  = new PWM("pwmchip4/", "pwm0/");
-    rollServo   = new PWM("pwmchip2/", "pwm1/");
+    pitchServo  = new PWM("pwmchip2/", "pwm0/");
+    rollServo   = new PWM("pwmchip0/", "pwm1/");
 
     leftImu     = 1 << 3;
     rightImu    = 1 << 4;
@@ -63,11 +63,11 @@ Robot::Robot(int x): points(75){
     leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
     rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_68, BlackLib::output, BlackLib::FastMode);
     headSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_44, BlackLib::output, BlackLib::FastMode);
-    pitchServo  = new PWM("pwmchip6/", "pwm0/");
-    rollServo   = new PWM("pwmchip6/", "pwm1/");
+    pitchServo  = new PWM("pwmchip5/", "pwm0/");
+    rollServo   = new PWM("pwmchip5/", "pwm1/");
 
-    leftImu     = 1 << 0;
-    rightImu    = 1 << 1;
+    leftImu     = 1 << 1;
+    rightImu    = 1 << 0;
     headImu     = 1 << 2;
 
     std::copy(pitchesR, pitchesR+3, pitchPos);
@@ -106,15 +106,18 @@ Robot::Robot(int x): points(75){
 
 short Robot::checkPunches(){
   
-    
+  usleep(100);
   imuReader->setDeviceAddress(muxAddr);
   imuReader->writeByte(0, leftImu);
+  usleep(100);
   imuReader->setDeviceAddress(imuAddr);
   
   int8_t left = imuReader->readByte(GYRO_Z_OUT_H);
 
   imuReader->setDeviceAddress(muxAddr);
+  usleep(100);
   imuReader->writeByte(0, rightImu);
+  usleep(100);
   imuReader->setDeviceAddress(imuAddr);
 
   int8_t right = imuReader->readByte(GYRO_Z_OUT_H);
@@ -148,9 +151,14 @@ void Robot::punch(short ps){
 void Robot::checkHits(){
 
   int headlat = abs(headShotLR->getNumericValue()-2000)/400;
+
+  usleep(100);
   int headant = abs(headShotFB->getNumericValue()-2000)/400;
+  usleep(100);
   int c1      = chest1->getNumericValue();
+  usleep(100);
   int c2      = chest2->getNumericValue();
+  usleep(100);
   int c3      = chest3->getNumericValue();
 
   points      = points - std::min(5,headlat+headant) - c1 - c2 - c3;
@@ -174,7 +182,9 @@ void Robot::dodge(){
   imuReader->writeByte(0, headImu);
   imuReader->setDeviceAddress(imuAddr);
   
+  usleep(100);
   int dodgeLR = imuReader->readByte(ACCEL_X_OUT_H);
+  usleep(100);
   int dodgeFB = imuReader->readByte(ACCEL_Z_OUT_H);
 
   int lrPos = 1;
@@ -218,12 +228,48 @@ void Robot::dodge(){
   } 
 }
 
-void Robot::die(){
+void Robot::dieBegin(){
+  pitchServo->disable();
+  usleep(1000);
+  pitchServo->setDutyCycle(pitchPos[2]);
+  usleep(100);
+  pitchServo->enable();
+  sleep(1);
+  headSol->setValue(BlackLib::high);
+}
 
+void Robot::dieEnd(){
+  headSol->setValue(BlackLib::low);
 }
 
 void Robot::win(){
 
+  pitchServo->disable();
+  usleep(1000);
+  pitchServo->setDutyCycle(pitchPos[2]);
+  usleep(100);
+  pitchServo->enable();
+  sleep(1);
+  leftSol->setValue(BlackLib::high);
+  rightSol->setValue(BlackLib::high);
+  usleep(170000);
+  leftSol->setValue(BlackLib::low);
+  rightSol->setValue(BlackLib::low);
+  usleep(600000);
+  leftSol->setValue(BlackLib::high);
+  rightSol->setValue(BlackLib::high);
+  usleep(170000);
+  leftSol->setValue(BlackLib::low);
+  rightSol->setValue(BlackLib::low);
+  usleep(600000);
+  leftSol->setValue(BlackLib::high);
+  rightSol->setValue(BlackLib::high);
+  usleep(170000);
+  leftSol->setValue(BlackLib::low);
+  rightSol->setValue(BlackLib::low);
+  usleep(600000);
+
+  
 }
 
 Robot::~Robot(){

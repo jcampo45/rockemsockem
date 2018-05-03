@@ -74,14 +74,20 @@ int main(int argc, char **argv){
 
   // Show winner
   if(leftRobot.points>0){
-
-    rightRobot.die();
+    disp.set(8,8,':','n','n');
+    disp.flash();
+    rightRobot.dieBegin();
+    sleep(1);
     leftRobot.win();
-
+    rightRobot.dieEnd();
   }else{
 
-    leftRobot.die();
+    disp.set('n','n',':',8,8);
+    disp.flash();
+    leftRobot.dieBegin();
+    sleep(1);
     rightRobot.win();
+    leftRobot.dieEnd();
 
   }
 

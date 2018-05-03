@@ -16,7 +16,8 @@ public:
   void unpunch(short ps);
   void dodge();
   void update();
-  void die();
+  void dieBegin();
+  void dieEnd();
   void win();
 
   int points;
