@@ -4,12 +4,12 @@
 const int punchThresh        = 80;
 const int leftThresh         = 27;
 const int rightThresh        = -27;
-const int frontThresh        = 22;
-const int backThresh         = -22; 
+const int frontThresh        = 13;
+const int backThresh         = -13; 
 
 const int rollsB[3]          = {1900000,1750000,1650000};
 const int pitchesB[3]        = {1000000,960000,900000};
-const int rollsR[3]          = {1750000,1550000,1350000};
+const int rollsR[3]          = {1350000,1550000,1750000};
 const int pitchesR[3]        = {2400000,2350000,2280000};
 
 const uint8_t muxAddr        = 0x70;
@@ -27,6 +27,9 @@ const uint8_t GYRO_Y_OUT_H   = 0x45;
 const uint8_t GYRO_Y_OUT_L   = 0x46;
 const uint8_t GYRO_Z_OUT_H   = 0x47;
 const uint8_t GYRO_Z_OUT_L   = 0x48;
+
+int curFB = 1;
+int curLR = 1;
 
 Robot::Robot(int x): points(75){
   
@@ -60,8 +63,8 @@ Robot::Robot(int x): points(75){
     leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
     rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_68, BlackLib::output, BlackLib::FastMode);
     headSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_44, BlackLib::output, BlackLib::FastMode);
-    pitchServo  = new PWM("pwmchip5/", "pwm0/");
-    rollServo   = new PWM("pwmchip5/", "pwm1/");
+    pitchServo  = new PWM("pwmchip4/", "pwm0/");
+    rollServo   = new PWM("pwmchip4/", "pwm1/");
 
     leftImu     = 1 << 0;
     rightImu    = 1 << 1;
@@ -173,31 +176,38 @@ void Robot::dodge(){
   
   int dodgeLR = imuReader->readByte(ACCEL_X_OUT_H);
   int dodgeFB = imuReader->readByte(ACCEL_Z_OUT_H);
-  //  std::cout<<dodgeLR<<std::endl;
 
+  int lrPos = 1;
+  int fbPos = 1;
   if (dodgeFB >= frontThresh){
-    std::cout<<"front"<<std::endl;
-    pitchServo->setDutyCycle(pitchPos[0]);
+    fbPos = 0;
   }
   if (dodgeFB <= backThresh){
-    std::cout<<"back"<<std::endl;
-    pitchServo->setDutyCycle(pitchPos[2]);
+    fbPos = 2;
   }
   if ((frontThresh > dodgeFB) && (dodgeFB > backThresh)){
-    pitchServo->setDutyCycle(pitchPos[1]);
+    fbPos = 1;
   }
   
   if (dodgeLR >= leftThresh){
-    std::cout<<"left"<<std::endl;
-    rollServo->setDutyCycle(rollPos[0]);
+    lrPos = 0;
   }
   if (dodgeLR <= rightThresh){
-    std::cout<<"right"<<std::endl;
-    rollServo->setDutyCycle(rollPos[2]);
+    lrPos = 2;
   }
   if ((leftThresh > dodgeLR) && (dodgeLR > rightThresh)){
-    rollServo->setDutyCycle(rollPos[1]);
+    lrPos = 1;
   }
+
+  if (fbPos != curFB){
+    curFB = fbPos;
+    pitchServo->setDutyCycle(pitchPos[fbPos]);
+  }
+  
+  if (lrPos != curLR){
+    curLR = lrPos;
+    rollServo->setDutyCycle(rollPos[lrPos]);
+  } 
 }
 
 void Robot::die(){
