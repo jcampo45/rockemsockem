@@ -43,8 +43,8 @@ Robot::Robot(int x): points(75){
     leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_2, BlackLib::output, BlackLib::FastMode);
     rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_15, BlackLib::output, BlackLib::FastMode);
     headSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_14, BlackLib::output, BlackLib::FastMode);
-    pitchServo  = new PWM("pwmchip2/", "pwm0/");
-    rollServo   = new PWM("pwmchip0/", "pwm1/");
+    pitchServo  = new PWM("pwmchip4/", "pwm0/");
+    rollServo   = new PWM("pwmchip2/", "pwm1/");
 
     leftImu     = 1 << 3;
     rightImu    = 1 << 4;
@@ -63,8 +63,8 @@ Robot::Robot(int x): points(75){
     leftSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_67, BlackLib::output, BlackLib::FastMode);
     rightSol    = new BlackLib::BlackGPIO(BlackLib::GPIO_68, BlackLib::output, BlackLib::FastMode);
     headSol     = new BlackLib::BlackGPIO(BlackLib::GPIO_44, BlackLib::output, BlackLib::FastMode);
-    pitchServo  = new PWM("pwmchip4/", "pwm0/");
-    rollServo   = new PWM("pwmchip4/", "pwm1/");
+    pitchServo  = new PWM("pwmchip6/", "pwm0/");
+    rollServo   = new PWM("pwmchip6/", "pwm1/");
 
     leftImu     = 1 << 0;
     rightImu    = 1 << 1;
@@ -201,12 +201,20 @@ void Robot::dodge(){
 
   if (fbPos != curFB){
     curFB = fbPos;
+    pitchServo->disable();
+    usleep(1000);
     pitchServo->setDutyCycle(pitchPos[fbPos]);
+    usleep(100);
+    pitchServo->enable();
   }
   
   if (lrPos != curLR){
     curLR = lrPos;
+    rollServo->disable();
+    usleep(1000);
     rollServo->setDutyCycle(rollPos[lrPos]);
+    usleep(100);
+    rollServo->enable();
   } 
 }
 

@@ -35,11 +35,15 @@ int main(int argc, char **argv){
   
     // Check for punches
     lp = leftRobot.checkPunches();
+    usleep(5000);
     rp = rightRobot.checkPunches();
-
+    usleep(5000);
+    
     // Punch
     leftRobot.punch(lp);
+    usleep(5000);
     rightRobot.punch(rp);
+    usleep(5000);
     
     // Pause for extension
     usleep(150000);
@@ -47,17 +51,23 @@ int main(int argc, char **argv){
     //    printf("Reading Hits\n");
     // Register hit
     leftRobot.checkHits();
+    usleep(5000);
     rightRobot.checkHits();
+    usleep(5000);
     //    printf("Hits Read\n");
 
     // Retract
     leftRobot.unpunch(lp);
+    usleep(5000);
     rightRobot.unpunch(rp);
-
+    usleep(5000);
+    
     // Check for and execute dodge
     leftRobot.dodge();
+    usleep(5000);
     rightRobot.dodge();
-
+    usleep(5000);
+    
     disp.set(leftRobot.points/10, leftRobot.points%10, ':', rightRobot.points/10, rightRobot.points%10);
     
   }

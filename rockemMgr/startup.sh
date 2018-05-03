@@ -7,6 +7,8 @@ config-pin P9.14 pwm
 config-pin P8.13 pwm
 config-pin P8.19 pwm
 
+./pwmcheck.sh
+
 echo 49 > /sys/class/gpio/export
 echo 115 > /sys/class/gpio/export
 echo 112 > /sys/class/gpio/export
