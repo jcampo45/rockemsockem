@@ -1,0 +1,15 @@
+########################################################################################
+# Joe Campo
+# 7/29/2018
+# Rockem Guide
+########################################################################################
+
+# Basics
+- Initialize IO port usage: '$ ./startup.sh'
+- Change robot.cpp constructor to the correct pwm chip
+- Build system: '$ make'
+- Build tests: '$ make [testname]'
+- Run test/program: '$ ./[programname]'
+- Delete unnecessary build files: '$ make clean'
+
+
