@@ -20,3 +20,4 @@ Interfaces (including both robots):
 - 4 punching solenoids
 - 2 head popping solenoids
 - 1 5-digit 7-segment display
+- 6 human-mounted 9-axis IMUs
